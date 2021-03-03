@@ -25,7 +25,6 @@ mongoose.connect(
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded());
 
-
 //importar rutas
 app.use("/api/usuarios", routeUsuarios);
 app.use("/api/auth", routeAuth);
