@@ -4,9 +4,11 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const routeUsuarios = require('./routes/usuarios');
 const routeAuth = require('./routes/auth');
+const cors = require('cors');
 
 // crear el servidor
 const app = express();
+app.use(cors());
 
 // Conectar a mongodb
 mongoose.Promise = global.Promise;
