@@ -20,7 +20,11 @@ exports.crearUsuario = async (req, res) => {
         const salt = await bcryptjs.genSalt(10);
         const encryptedPass = await bcryptjs.hash(password, salt);
 
-        const usuario = new Usuario({ ...req.body, createdAt: Date.now(), password: encryptedPass });
+        const usuario = new Usuario({
+            ...req.body,
+            createdAt: Date.now(),
+            password: encryptedPass,
+        });
         await usuario.save();
 
         // Crear y firmar jwt
