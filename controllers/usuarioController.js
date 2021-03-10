@@ -62,6 +62,12 @@ exports.actualizarUsuario = async (req, res) => {
 exports.actualizarUsuarioLogueado = async (req, res) => {
     try {
         const { body, usuario } = req;
+        if (body.password) {
+            //hashear el password
+            const salt = await bcryptjs.genSalt(10);
+            const encryptedPass = await bcryptjs.hash(body.password, salt);
+            body.password = encryptedPass;
+        }
         const usuarioActualizado = await Usuario.findOneAndUpdate({ _id: usuario.id }, body, { new: true });
         res.send(usuarioActualizado);
     } catch (error) {
