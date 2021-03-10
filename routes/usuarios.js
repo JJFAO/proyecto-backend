@@ -17,8 +17,9 @@ router.post(
     usuarioController.crearUsuario
 );
 router.get('/usuarioLogueado', auth, usuarioController.usuarioLogueado);
+router.put('/usuarioLogueado', auth, usuarioController.actualizarUsuarioLogueado);
 router.get('/', auth, usuarioController.obtenerUsuarios);
-router.put('/', usuarioController.actualizarUsuario);
+router.put('/:userId', auth, usuarioController.actualizarUsuario);
 router.delete('/', usuarioController.eliminarUsuario);
 
 module.exports = router;

@@ -50,8 +50,23 @@ exports.obtenerUsuarios = (req, res) => {
     res.send(req.usuario);
 };
 
-exports.actualizarUsuario = (req, res) => {
-    console.log('funcion actualizar usuario');
+exports.actualizarUsuario = async (req, res) => {
+    try {
+        const { params, body } = req;
+        res.send({ params, body });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+exports.actualizarUsuarioLogueado = async (req, res) => {
+    try {
+        const { body, usuario } = req;
+        const usuarioActualizado = await Usuario.findOneAndUpdate({ _id: usuario.id }, body, { new: true });
+        res.send(usuarioActualizado);
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 exports.eliminarUsuario = (req, res) => {
