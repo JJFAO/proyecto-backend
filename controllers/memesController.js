@@ -21,6 +21,23 @@ exports.obtenerMemes = async (req, res) => {
     res.send(memes);
 };
 
+exports.obtenerMeme = async (req, res) => {
+    try {
+        const { memeId } = req.params;
+        if (!ObjectId.isValid(memeId)) {
+            return res.status(400).send('Id no valido');
+        }
+        const meme = await Meme.findById(memeId);
+        if (!meme) {
+            res.status(404).send('Meme no encontrado');
+        }
+        res.send(meme);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Error al buscar el meme');
+    }
+};
+
 exports.eliminarMeme = async (req, res) => {
     try {
         const { memeId } = req.params;
@@ -38,3 +55,4 @@ exports.eliminarMeme = async (req, res) => {
         res.status(500).send('Error al eliminar meme');
     }
 };
+
