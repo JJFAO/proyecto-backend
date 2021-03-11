@@ -17,7 +17,7 @@ exports.crearMeme = async (req, res) => {
 };
 
 exports.obtenerMemes = async (req, res) => {
-    const memes = await Meme.find().select('-__v');
+    const memes = await Meme.find().select('-__v').populate('creador', 'nombre -_id');
     res.send(memes);
 };
 
@@ -29,7 +29,7 @@ exports.obtenerMeme = async (req, res) => {
         }
         const meme = await Meme.findById(memeId);
         if (!meme) {
-            res.status(404).send('Meme no encontrado');
+            return res.status(404).send('Meme no encontrado');
         }
         res.send(meme);
     } catch (error) {
@@ -44,10 +44,17 @@ exports.eliminarMeme = async (req, res) => {
         if (!ObjectId.isValid(memeId)) {
             return res.status(400).send('Id no valido');
         }
+
         const meme = await Meme.findById(memeId);
-        if (meme.creador.toString() !== req.usuario.id.toString()) {
+
+        if (!meme) {
+            return res.status(404).send('Meme no encontrado');
+        }
+
+        if (meme.creador.equals(req.usuario.id)) {
             return res.status(403).send('No tiene permisos para borrar el meme');
         }
+
         await meme.remove();
         res.send('Meme eliminado');
     } catch (error) {
@@ -55,4 +62,3 @@ exports.eliminarMeme = async (req, res) => {
         res.status(500).send('Error al eliminar meme');
     }
 };
-
