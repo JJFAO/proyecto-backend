@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const morgan = require('morgan');
 const routeUsuarios = require('./routes/usuarios');
 const routeAuth = require('./routes/auth');
 const routeMemes = require('./routes/memes');
@@ -23,8 +24,9 @@ mongoose.connect(
 );
 
 // Habilitar express.json (tambien se puede usar body parser)
-app.use(express.json({ extended: true }));
+app.use(express.json({ limit: '50mb', extended: true }));
 app.use(express.urlencoded());
+app.use(morgan('tiny'));
 
 //importar rutas
 app.use('/api/usuarios', routeUsuarios);
